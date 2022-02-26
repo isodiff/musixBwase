@@ -1,4 +1,4 @@
-.env
 start.sh
+.env
 node_modules/
 package-lock.json
