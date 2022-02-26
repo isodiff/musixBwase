@@ -8,7 +8,7 @@ module.exports = {
         .setDescription("loads songs from youtube")
         .addSubcommand((subcommand) =>
             subcommand
-                .setName("song")
+                .setName("song-url")
                 .setDescription("Loads a single song from a url")
                 .addStringOption((option) => option.setName("url").setDescription("the song's url").setRequired(true))
         )
@@ -20,10 +20,10 @@ module.exports = {
         )
         .addSubcommand((subcommand) =>
             subcommand
-                .setName("search")
-                .setDescription("Searches for sogn based on provided keywords")
+                .setName("song")
+                .setDescription("Searches for song based on provided keywords")
                 .addStringOption((option) =>
-                    option.setName("searchterms").setDescription("the search keywords").setRequired(true)
+                    option.setName("search-terms").setDescription("the search keywords").setRequired(true)
                 )
         ),
     run: async ({ client, interaction }) => {
@@ -34,7 +34,7 @@ module.exports = {
 
         let embed = new MessageEmbed()
 
-        if (interaction.options.getSubcommand() === "song") {
+        if (interaction.options.getSubcommand() === "song-url") {
             let url = interaction.options.getString("url")
             const result = await client.player.search(url, {
                 requestedBy: interaction.user,
@@ -65,8 +65,8 @@ module.exports = {
             embed
                 .setDescription(`**${result.tracks.length} songs from [${playlist.title}](${playlist.url})** have been added to the Queue`)
                 .setThumbnail(playlist.thumbnail)
-        } else if (interaction.options.getSubcommand() === "search") {
-            let url = interaction.options.getString("searchterms")
+        } else if (interaction.options.getSubcommand() === "song") {
+            let url = interaction.options.getString("search-terms")
             const result = await client.player.search(url, {
                 requestedBy: interaction.user,
                 searchEngine: QueryType.AUTO
