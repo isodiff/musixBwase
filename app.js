@@ -20,6 +20,11 @@ const client = new Discord.Client({
     ]
 })
 
+
+var cyan = "\x1b[36m%s\x1b[0m"
+var yelo = "\x1b[33m%s\x1b[0m"
+var magenta = "\x1b[35m%s\x1b[0m"
+
 client.slashcommands = new Discord.Collection()
 client.player = new Player(client, {
     ytdlOptions: {
@@ -54,7 +59,15 @@ if (LOAD_SLASH) {
 }
 else {
     client.on("ready", () => {
-        console.log(`Logged in as ${client.user.tag}`)
+        const cols = client.guilds.cache.map(guild => guild.name)
+        const rows = client.guilds.cache.map(guild => guild.id);
+        var result = rows.reduce(function (result, field, index) {
+            result[cols[index]] = field;
+            return result;
+        }, {})
+        console.log(magenta, result)
+        console.log(yelo, `Logged in as ${client.user.tag} in ${Object.keys(result).length} guilds`)
+        client.user.setActivity("Слава Україні!", { type: "WATCHING" })
     })
     client.on("interactionCreate", (interaction) => {
         async function handleCommand() {
